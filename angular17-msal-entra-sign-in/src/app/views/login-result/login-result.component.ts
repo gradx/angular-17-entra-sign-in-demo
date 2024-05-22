@@ -25,15 +25,15 @@ export class LoginResultComponent {
     this.authProvider = authStoreProvider;
     this.data = dataService;
     this.authService = msal;
-    debugger;
   }
 
   ngOnInit() {
-    debugger;
-    this.test();  
+    // required to stop redirection from msal?
+    window.location.replace("localhost:4200/signin");
+    this.loadProfile();  
   }
 
-  test() {
+  loadProfile() {
     this.authService.acquireTokenSilent({
       scopes: ['https://graph.microsoft.com/User.Read'],
       account: this.msal.instance.getAllAccounts()[0],
@@ -44,7 +44,7 @@ export class LoginResultComponent {
         let result = response as string;
         let responsePayload = decodeJwtResponse(result);
 
-        window.authProvider.store.update({ 
+        this.authProvider.store.update({ 
             name: responsePayload.name, 
             sub: responsePayload.sub, 
             given_name: responsePayload.given_name, 

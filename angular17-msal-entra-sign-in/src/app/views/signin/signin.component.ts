@@ -8,19 +8,19 @@ import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-google-signin',
+  selector: 'app-signin',
   standalone: true,
   imports: [
 
   ],
   providers: [],
-  templateUrl: './google-signin.component.html',
-  styleUrl: './google-signin.component.less'
+  templateUrl: './signin.component.html',
+  styleUrl: './signin.component.less'
 })
 
 
 
-export class GoogleSigninComponent {
+export class SigninComponent {
   env: any;
   authService: MsalService;
   res: any;
@@ -43,6 +43,7 @@ export class GoogleSigninComponent {
       .subscribe(res => {
         console.log('result', res);
         this.res = res;
+        this.router.navigateByUrl('/login-result');
       });
   }
 
@@ -59,17 +60,4 @@ export class GoogleSigninComponent {
         this.res = res;
       });
   }
-
-
-  getProfile() {
-    let accounts = this.authService.instance.getAllAccounts();
-    //console.log(accounts);
-
-    console.log(this.authService.instance.getAccountByLocalId(accounts[0].localAccountId));
-
-    this.http.get(environment.apiConfig.uri)
-      .subscribe(profile => {
-        console.log(profile);
-      });
-   }
 }

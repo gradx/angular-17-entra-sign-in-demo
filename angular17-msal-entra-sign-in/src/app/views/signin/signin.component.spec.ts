@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GoogleSigninComponent } from './google-signin.component';
+import { GoogleSigninComponent } from './signin.component';
 
 describe('GoogleSigninComponent', () => {
   let component: GoogleSigninComponent;
