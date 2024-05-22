@@ -1,1 +1,3 @@
-## Complete e2e demo of angular 17 + msal + .net80 web api JWT integration for Micrsofot Entra
+## MSAL v3 + Angular 17 + Popup/Redirect demo
+
+Complete e2e demo of an integration with Microsoft's Entra using MSAL v3
