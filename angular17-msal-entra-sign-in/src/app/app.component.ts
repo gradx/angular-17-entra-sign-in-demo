@@ -5,13 +5,13 @@ import { DataService } from './services/data.service';
 import { MsalService, MsalModule } from '@azure/msal-angular';
 import { RouterLink} from '@angular/router';
 import { CommonModule } from '@angular/common';
-
+import { MsalBroadcastService } from '@azure/msal-angular';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, MsalModule, RouterOutlet, RouterLink],
-  providers: [AuthStoreProvider, DataService],
+  imports: [CommonModule, RouterOutlet, RouterLink],
+  providers: [AuthStoreProvider, DataService, MsalBroadcastService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less',
 })
@@ -19,11 +19,10 @@ import { CommonModule } from '@angular/common';
 
 export class AppComponent {
   title = 'Angular17SignInDemo';
-  isIframe = false;
-  loginDisplay = false;
 
-  constructor(private authService: MsalService) {}
-
+  constructor(private authService: MsalService) {
+    
+  }
 
   ngOnInit(): void {
     this.authService.handleRedirectObservable().subscribe();

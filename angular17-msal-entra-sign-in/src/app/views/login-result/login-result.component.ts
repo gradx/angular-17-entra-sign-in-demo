@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { AuthStoreProvider } from '../../signal-stores/auth-store';
 import { DataService } from '../../services/data.service';
 import { Observable } from 'rxjs';
 import { MsalService } from '@azure/msal-angular';
+import { AuthenticationResult } from '@azure/msal-browser';
 
 @Component({
   selector: 'app-login-result',
@@ -16,10 +17,8 @@ import { MsalService } from '@azure/msal-angular';
 export class LoginResultComponent {
   authProvider: AuthStoreProvider;
   data: DataService;
-
   message$: Observable<string> | null = null;
   authService: MsalService;
-
 
   constructor(private msal: MsalService, private authStoreProvider: AuthStoreProvider, private dataService: DataService) {
     this.authProvider = authStoreProvider;
@@ -27,20 +26,30 @@ export class LoginResultComponent {
     this.authService = msal;
   }
 
+  // http://localhost:4200/login-result#code=M.C547_SN1.2.U.fc7a87a1-bdc0-0fef-e805-eb2278e13627&client_info=eyJ2ZXIiOiIxLjAiLCJzdWIiOiJBQUFBQUFBQUFBQUFBQUFBQUFBQUFQV2F3cFVWckZ3aTZHSEFQaFA3N0tFIiwibmFtZSI6IkRhdmlkIFlvIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiZ3JhZHhAaG90bWFpbC5jb20iLCJvaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDhjNC0xMTU2NmQ4ZjBlODEiLCJ0aWQiOiI5MTg4MDQwZC02YzY3LTRjNWItYjExMi0zNmEzMDRiNjZkYWQiLCJob21lX29pZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wOGM0LTExNTY2ZDhmMGU4MSIsInVpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wOGM0LTExNTY2ZDhmMGU4MSIsInV0aWQiOiI5MTg4MDQwZC02YzY3LTRjNWItYjExMi0zNmEzMDRiNjZkYWQifQ&state=eyJpZCI6IjAxOGZhMjFiLWZlYjktNzcwOC05NmNjLTYwMTBhNWQxMjQzNCIsIm1ldGEiOnsiaW50ZXJhY3Rpb25UeXBlIjoicmVkaXJlY3QifX0=
+
   ngOnInit() {
-    // required to stop redirection from msal?
-    window.location.replace("localhost:4200/signin");
-    this.loadProfile();  
+    this.load();
+  }
+
+  load() {
+    this.authService.handleRedirectObservable().subscribe({ 
+      next: (result: AuthenticationResult) => {
+         if (!this.authService.instance.getActiveAccount() && this.authService.instance.getAllAccounts().length > 0) {
+            this.authService.instance.setActiveAccount(result.account);
+            this.loadProfile();  
+         }
+      },
+      error: (error) => console.log(error)
+   });
   }
 
   loadProfile() {
     this.authService.acquireTokenSilent({
       scopes: ['https://graph.microsoft.com/User.Read'],
-      account: this.msal.instance.getAllAccounts()[0],
+      account: this.authService.instance.getAllAccounts()[0],
     }).subscribe(res => {
-      console.log('res', res);
       this.dataService.validateToken(JSON.stringify(res)).subscribe(response => {
-        console.log('response', response);
         let result = response as string;
         let responsePayload = decodeJwtResponse(result);
 

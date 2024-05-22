@@ -18,12 +18,9 @@ import { Router } from '@angular/router';
   styleUrl: './signin.component.less'
 })
 
-
-
 export class SigninComponent {
   env: any;
   authService: MsalService;
-  res: any;
   dataService: DataService;
 
   constructor(private router: Router, private authProvider: AuthStoreProvider, private msal: MsalService, private data: DataService,   private http: HttpClient) { 
@@ -37,12 +34,10 @@ export class SigninComponent {
     const POPUP_REQUEST: PopupRequest /*| SilentRequest*/ = {
       scopes: ['https://graph.microsoft.com/User.Read'],// Add more permissions in this array as needed.
       prompt: 'login',//'consent',//'create''login',//'select_account',
-      }
+    }
 
     this.authService.acquireTokenPopup(POPUP_REQUEST)
       .subscribe(res => {
-        console.log('result', res);
-        this.res = res;
         this.router.navigateByUrl('/login-result');
       });
   }
@@ -52,12 +47,8 @@ export class SigninComponent {
     const POPUP_REQUEST: PopupRequest /*| SilentRequest*/ = {
       scopes: ['https://graph.microsoft.com/User.Read'],// Add more permissions in this array as needed.
       prompt: 'login',//'consent',//'create''login',//'select_account',
-      }
+    }
 
-    this.authService.acquireTokenRedirect(POPUP_REQUEST)
-      .subscribe(res => {
-        console.log('result', res);
-        this.res = res;
-      });
+    this.authService.acquireTokenRedirect(POPUP_REQUEST).subscribe();
   }
 }

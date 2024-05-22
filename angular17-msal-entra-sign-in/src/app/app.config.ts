@@ -1,16 +1,15 @@
-import { ApplicationConfig, importProvidersFrom  } from '@angular/core';
+import { ApplicationConfig  } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS, withFetch } from '@angular/common/http';
 import { routes } from './app.routes';
 import { BearerInterceptor } from './interceptors/bearer-interceptor';
 import { IPublicClientApplication, PublicClientApplication, InteractionType, BrowserCacheLocation, LogLevel } from '@azure/msal-browser';
-import { MSAL_INSTANCE, MsalInterceptorConfiguration, MsalGuardConfiguration, MSAL_GUARD_CONFIG, MSAL_INTERCEPTOR_CONFIG, MsalService, MsalGuard, MsalBroadcastService } from '@azure/msal-angular';
+import { MSAL_INSTANCE, MsalInterceptorConfiguration, MsalService } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [ 
     provideRouter(routes),
-    //provideNoopAnimations(),
     provideHttpClient(withInterceptorsFromDi(), withFetch()),  
     {
         provide: HTTP_INTERCEPTORS,
@@ -21,17 +20,7 @@ export const appConfig: ApplicationConfig = {
         provide: MSAL_INSTANCE,
         useFactory: MSALInstanceFactory
     },
-    // {
-    //     provide: MSAL_GUARD_CONFIG,
-    //     useFactory: MSALGuardConfigFactory
-    // },
-    // {
-    //     provide: MSAL_INTERCEPTOR_CONFIG,
-    //     useFactory: MSALInterceptorConfigFactory
-    // },
     MsalService,
-    // MsalGuard,
-    // MsalBroadcastService
   ]
 };
 
@@ -47,7 +36,8 @@ export function MSALInstanceFactory(): IPublicClientApplication {
       clientId: environment.msalConfig.auth.clientId,
       authority: environment.msalConfig.auth.authority,
       redirectUri: 'http://localhost:4200/login-result',
-      postLogoutRedirectUri: '/'
+      postLogoutRedirectUri: '/',
+      navigateToLoginRequestUrl: false
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage
@@ -76,12 +66,3 @@ export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
   };
 }
 
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
-  return { 
-    interactionType: InteractionType.Redirect,
-    authRequest: {
-      scopes: [...environment.apiConfig.scopes]
-    },
-    loginFailedRoute: '/login-failed'
-  };
-}
