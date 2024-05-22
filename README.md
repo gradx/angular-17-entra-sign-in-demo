@@ -7,22 +7,7 @@ Complete e2e demo of an integration with Microsoft's Entra using MSAL v3
 Update app.config.ts and environment.ts for Angular
 `      redirectUri: 'http://localhost:4200/login-result', `
 
-```
-export const environment = {
-    production: true,
-    msalConfig: {
-        auth: {
-            clientId: '165040ca-d322-433d-8dd9-ffdc95008c38',
-            authority: 'https://login.microsoftonline.com/common'
-        }
-    },
-    apiConfig: {
-        scopes: ['user.read'],
-        uri: 'https://graph.microsoft.com/v1.0/me'
-    }
-};
-
-```
+` clientId: '165040ca-d322-433d-8dd9-ffdc95008c38'`
 
 Update appsettings.json for .NET 8.0 
 ```
