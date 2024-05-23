@@ -1,11 +1,15 @@
 # MSAL v3 + Angular 17 + Popup/Redirect demo
 
-Complete e2e demo of an integration with Microsoft's Entra using MSAL v3
+Complete e2e demo of an integration with Microsoft Entra using MSAL v3 clientside and .NET 8.0 Web API server-side
+
+Includes: Sign In, token relay to server, token validation server-side, JWT setup in Web Api saved to a NgRx Signal Store
+
+__Designed to be a skeleton project that can help bootstrap a new application with minimal changes__
 
 ### Configuration Required after setting up tenant in Azure
 
 Update app.config.ts 
-`      redirectUri: 'http://localhost:4200/login-result', `
+` redirectUri: 'http://localhost:4200/login-result', `
 
 and environment.ts for Angular
 ` clientId: '165040ca-d322-433d-8dd9-ffdc95008c38'`
