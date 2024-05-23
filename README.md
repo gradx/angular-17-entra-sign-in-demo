@@ -2,7 +2,7 @@
 
 Complete e2e demo of an integration with Microsoft's Entra using MSAL v3
 
-## Configuration Required after setting up tenant in Azure
+# Configuration Required after setting up tenant in Azure
 
 Update app.config.ts 
 `      redirectUri: 'http://localhost:4200/login-result', `
