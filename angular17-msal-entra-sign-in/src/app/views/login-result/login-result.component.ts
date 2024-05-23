@@ -30,6 +30,9 @@ export class LoginResultComponent {
 
   ngOnInit() {
     this.load();
+    
+    if (this.authService.instance.getAllAccounts().length > 0)
+      this.loadProfile();
   }
 
   load() {
