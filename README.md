@@ -1,5 +1,7 @@
 # MSAL v3 + Angular 17 + Popup/Redirect demo
 
+This repo is no longer maintained.  Visit the Angular 18 repo [here](https://github.com/gradx/angular-18-entra-sign-in-demo)
+
 Complete e2e demo of an integration with Microsoft Entra using MSAL v3 clientside and .NET 8.0 Web API server-side
 
 **Includes:** 
